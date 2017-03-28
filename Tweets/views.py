@@ -6,14 +6,23 @@ from elasticsearch import Elasticsearch
 import elasticsearch
 import time
 import json
-import geocoder
 from django.views.decorators.csrf import csrf_protect
 from requests_aws4auth import AWS4Auth
+from django.http import HttpResponse
+import requests
 
 # Create your views here.
 @csrf_protect
 def index(request):
     return render(request,"index.html",{"my_data":"false","firstCheck":"true"})
+
+@csrf_protect
+def selectMap(request):
+    if request.is_ajax():
+        #do something
+        request_data = request.POST
+        print('me '+request_data['lat'])
+        return HTTPResponse("OK")
 
 @csrf_protect
 def home(request):
@@ -23,7 +32,7 @@ def home(request):
     acess_secret = 'YOUR_KEY'
 
     # create instance of elasticsearch
-    host = 'YOUR_KEY'
+    host = 'YOUR_AWS_ES_HOST'
     awsauth = AWS4Auth('YOUR_KEY', 'YOUR_KEY', 'us-west-2', 'es')
     es = elasticsearch.Elasticsearch(
         hosts=[{'host': host, 'port': 443}],
@@ -48,14 +57,18 @@ def home(request):
             if (time.time() - self.start_time) < self.limit:
                 if 'user' in dict_data and dict_data['user']['location']:
                     try:
-                        doc = {"author": dict_data["user"]["screen_name"],
-                               "date": dict_data["created_at"],
-                               "location": dict_data['user']['location'],
-                               "lat": geocoder.google(dict_data['user']['location']).latlng[0],
-                               "lng": geocoder.google(dict_data['user']['location']).latlng[1],
-                               "message": dict_data["text"],
-                               "my_id": query}
-                        es.index(index="tweetmap",doc_type="tweets",body=doc)
+                        location = dict_data["user"]["location"]
+                        response = requests.get('https://maps.googleapis.com/maps/api/geocode/json?address= %s' % location)
+                        resp_json_payload = response.json()
+                        print(resp_json_payload['results'][0]['geometry']['location'])
+                        doc = {
+                            'location': resp_json_payload['results'][0]['geometry']['location'],
+                            'my_id': query,
+                            'time': dict_data["created_at"],
+                            'tweet': dict_data["text"],
+                            'username': dict_data["user"]["screen_name"]
+                        }
+                        es.index(index="mytwitter",doc_type="tweets",body=doc)
                     except:
                         pass
                     return True
@@ -85,7 +98,7 @@ def home(request):
 
     pass_list.setdefault('tweet', [])
 
-    res = es.search(size=5000, index="tweetmap", doc_type="tweets", body={
+    res = es.search(size=5000, index="mytwitter", doc_type="tweets", body={
         "query":{
             "match" : { "my_id": query}
         }

@@ -1,146 +1,112 @@
-{% load staticfiles %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Tweet Map</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <style>
-  #map {
-    height: 500px;
-    width: 100%;
-  }
-  /* navbar */
-  .navbar-default {
-    background-color: #313131;
-    border-color: #ffffff;
-  }
-  /* title */
-  .navbar-default .navbar-brand {
-    color: #ffffff;
-  }
-  .navbar-default .navbar-brand:hover,
-  .navbar-default .navbar-brand:focus {
-    color: #d3d3d3;
-  }
-  /* link */
-  .navbar-default .navbar-nav > li > a {
-    color: #000000;
-  }
-  .navbar-default .navbar-nav > li > a:hover,
-  .navbar-default .navbar-nav > li > a:focus {
-    color: #333;
-  }
-  .navbar-default .navbar-nav > .active > a,
-  .navbar-default .navbar-nav > .active > a:hover,
-  .navbar-default .navbar-nav > .active > a:focus {
-    color: #555;
-    background-color: #e7878e;
-  }
-  .navbar-default .navbar-nav > .open > a,
-  .navbar-default .navbar-nav > .open > a:hover,
-  .navbar-default .navbar-nav > .open > a:focus {
-    color: #555;
-    background-color: #9b64d5;
-  }
-  /* caret */
-  .navbar-default .navbar-nav > .dropdown > a .caret {
-    border-top-color: #777;
-    border-bottom-color: #777;
-  }
-  .navbar-default .navbar-nav > .dropdown > a:hover .caret,
-  .navbar-default .navbar-nav > .dropdown > a:focus .caret {
-    border-top-color: #333;
-    border-bottom-color: #333;
-  }
-  .navbar-default .navbar-nav > .open > a .caret,
-  .navbar-default .navbar-nav > .open > a:hover .caret,
-  .navbar-default .navbar-nav > .open > a:focus .caret {
-    border-top-color: #555;
-    border-bottom-color: #555;
-  }
-  /* mobile version */
-  .navbar-default .navbar-toggle {
-    border-color: #a792dd;
-  }
-  .navbar-default .navbar-toggle:hover,
-  .navbar-default .navbar-toggle:focus {
-    background-color: #5dd6dd;
-  }
-  .navbar-default .navbar-toggle .icon-bar {
-    background-color: #cc6761;
-  }
-  @media (max-width: 767px) {
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-      color: #777;
-    }
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
-    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
-      color: #333;
-    }
-  }
-  </style>
+    <meta charset="UTF-8">
+    <title>Tweet Map</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href='{% static "style.css" %}'>
 </head>
 <body>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand">TweetMap</a>
-      </div>
-      <div class="collapse navbar-collapse" action="/filter/" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav">
-          <li>
-            <form class="navbar-form navbar-left" role="search" action="/tweet/" method="POST">
-              {% csrf_token %}
-              <input type="text" class="form-control" placeholder="Search" name="myword" id="myword">
-              <input type="submit" value="Submit">
-            </form>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  <div id="map" style="margin-top: -3%;"></div>
-  <script>
-  function initMap() {
-    if({{firstCheck|safe}}) {
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 3,
-        center: {lat: 39.0550557, lng: 4.0322128}
-      });
-    }
-    else {
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 3,
-        center: {lat: 39.0550557, lng: 4.0322128}
-      });
-      if ({{my_data |safe}}) {
-        var data_from_django = {{ my_data |safe }};
-        total_tweets = data_from_django.tweet;
-        if(total_tweets.length <= 0)
-          alert("No Tweets Found!");
-        for (var i = 0; i < total_tweets.length; i++) {
-          var res = total_tweets[i];
-          new google.maps.Marker({
-            position:{
-              lat:res.lat,
-              lng:res.lng
-            },
-            map: map
-          });
+
+<section style="width: 100%;height: 100vh;">
+    <div id="map"></div>
+    <nav class="navbar navbar-default fixedElement">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" action="/filter/" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <form class="navbar-form navbar-left" role="search" action="/tweet/" method="POST">
+                            {% csrf_token %}
+                            <input type="text" class="form-control" placeholder="Search Tweets" name="myword" id="myword">
+                            <input type="submit" value="Submit">
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</section>
+<script>
+    function initMap() {
+        if ({{firstCheck | safe}}) {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 3,
+                center: {lat: 39.0550557, lng: 4.0322128}
+            });
+        } else {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 3,
+                center: {lat: 39.0550557, lng: 4.0322128}
+            });
+            if ({{my_data | safe}}){
+                var data_from_django = {{my_data | safe}};
+                total_tweets = data_from_django.tweet;
+                if (total_tweets.length <= 0) {
+                    alert("No Tweets Found!");
+                    return false;
+                }
+                for (var i = 0; i < total_tweets.length; i++) {
+                    var res = total_tweets[i];
+                    new google.maps.Marker({
+                        position: res['location'],
+                        map: map
+                    });
+                }
+                alert(total_tweets.length + " entries added!");
+            } else alert("No Data Found!");
         }
-        alert(total_tweets.length+" entries added!");
-      } else alert("No Data Found!");
     }
-  }
+
+//        google.maps.event.addListener(map, 'click', function (event) {
+//            new google.maps.Marker({
+//                position: event.latLng,
+//                map: map
+//            });
+//            $.ajaxSetup({
+//                beforeSend: function (xhr) {
+//                    xhr.setRequestHeader("X-CSRFToken", "" + getCookie('csrftoken'));
+//                }
+//            });
+//            $.ajax({
+//                method: 'POST',
+//                url: '/touch/',
+//                data: {'lat': event.latLng.lat(), 'lng': event.latLng.lng()},
+//                success: function (data) {
+//                    //this gets called when server returns an OK response
+//                    alert("it worked!");
+//                },
+//                error: function (data) {
+//                    alert("it didnt work");
+//                }
+//            });
+//        });
+//
+//    }
+//
+//    function getCookie(name) {
+//        var cookieValue = null;
+//        if (document.cookie && document.cookie != '') {
+//            var cookies = document.cookie.split(';');
+//            for (var i = 0; i < cookies.length; i++) {
+//                var cookie = jQuery.trim(cookies[i]);
+//                // Does this cookie string begin with the name we want?
+//                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+//                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+//                    break;
+//                }
+//            }
+//        }
+//        return cookieValue;
+//    }
 </script>
 <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuJ_2EbQPbUpHos8124meOr2QAlk3Okfs&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY&callback=initMap">
 </script>
 </body>
 </html>
