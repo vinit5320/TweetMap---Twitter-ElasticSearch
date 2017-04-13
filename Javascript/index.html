@@ -1,17 +1,84 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-                    "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
+<html lang="en">
 <html>
 <head>
-  <title>ES</title>
-  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-  crossorigin="anonymous"></script>
-  <script type="text/javascript" src="tests.js"></script>
+  <meta charset="UTF-8">
+  <title>Tweet Map</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="style.css">
+  <script src="oauth.js"></script>
+  <script src="sha1.js"></script>
 </head>
 <body>
-  <div id='dataRec'>
-  </div>
+
+<section style="width: 100%;height: 100vh;">
+  <div id="map"></div>
+  <nav class="navbar navbar-default fixedElement">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" action="/filter/" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <form class="navbar-form navbar-left" method="post">
+              <input type="text" class="form-control" placeholder="Search Tweets" name="tweetSearch" id="tweetSearch">
+            </form>
+            <input type="submit" value="Submit" onclick="searchSpecific();">
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</section>
+<script>
+
+    //        google.maps.event.addListener(map, 'click', function (event) {
+    //            new google.maps.Marker({
+    //                position: event.latLng,
+    //                map: map
+    //            });
+    //            $.ajaxSetup({
+    //                beforeSend: function (xhr) {
+    //                    xhr.setRequestHeader("X-CSRFToken", "" + getCookie('csrftoken'));
+    //                }
+    //            });
+    //            $.ajax({
+    //                method: 'POST',
+    //                url: '/touch/',
+    //                data: {'lat': event.latLng.lat(), 'lng': event.latLng.lng()},
+    //                success: function (data) {
+    //                    //this gets called when server returns an OK response
+    //                    alert("it worked!");
+    //                },
+    //                error: function (data) {
+    //                    alert("it didnt work");
+    //                }
+    //            });
+    //        });
+    //
+    //    }
+    //
+    //    function getCookie(name) {
+    //        var cookieValue = null;
+    //        if (document.cookie && document.cookie != '') {
+    //            var cookies = document.cookie.split(';');
+    //            for (var i = 0; i < cookies.length; i++) {
+    //                var cookie = jQuery.trim(cookies[i]);
+    //                // Does this cookie string begin with the name we want?
+    //                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+    //                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //        return cookieValue;
+    //    }
+</script>
+<script src="tests.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuJ_2EbQPbUpHos8124meOr2QAlk3Okfs&callback=getData">
+</script>
 </body>
 </html>
