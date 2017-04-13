@@ -1,0 +1,5 @@
+{
+    "require": {
+        "impensavel/floodgate": "^2.0"
+    }
+}

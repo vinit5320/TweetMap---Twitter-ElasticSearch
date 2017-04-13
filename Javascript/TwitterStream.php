@@ -1,35 +1,51 @@
 <?php
-$username = "TwitterUsername"; // Your twitter username.
-$limit = "5"; // Number of tweets to pull in.
 
-/* These prefixes and suffixes will display before and after the entire block of tweets. */
-$prefix = ""; // Prefix - some text you want displayed before all your tweets.
-$suffix = ""; // Suffix - some text you want displayed after all your tweets.
-$tweetprefix = ""; // Tweet Prefix - some text you want displayed before each tweet.
-$tweetsuffix = "<br>"; // Tweet Suffix - some text you want displayed after each tweet.
+require 'vendor/autoload.php';
 
-$feed = "http://search.twitter.com/search.atom?q=from:" . $username . "&rpp=" . $limit;
+use Impensavel\Floodgate\Floodgate;
+use Impensavel\Floodgate\FloodgateException;
 
-function parse_feed($feed, $prefix, $tweetprefix, $tweetsuffix, $suffix) {
+try {
+    $config = [
+        'oauth' => [
+            'consumer_key'    => 'bOoUz06VrazMxiQwLGSQN7dfo',
+            'consumer_secret' => 'oKRdgqLMuC7fXlYd6gqCNAbxbzLLvz8PN3l5Pz8HyXJbP2S2Vr',
+            'token'           => '2497069099-8YgNNNTWwfd5HCqVOP6iBBVL8eWmlzcdIBwehGU',
+            'token_secret'    => 'OIHuyx5r1VH81CeYajSeZbnOKnOQd5lzi9UNxpJjQ3a2w',
+        ],
+    ];
 
-    $feed = str_replace("&lt;", "<", $feed);
-    $feed = str_replace("&gt;", ">", $feed);
-    $clean = explode("<content type=\"html\">", $feed);
+    $floodgate = Floodgate::create($config);
+    $jsonData = array();
+    define('START_TIME', time());
+    // Data handler
+    $handler = function ($message) {
+        // dump each message from the stream
+        global $jsonData;
+        if (time() - START_TIME < 15) {
+            $main = (array)$message;
+            $user = (array)$main['user'];
+            if($user['location'] != ''){
+              $temp = array("name"=>$user['name'],"location"=>$user['location'],"tweet"=>$main['text']);
+              array_push($jsonData, $temp);
+            }
+        } else {
+            echo json_encode($jsonData);
+            exit(1);
+        }
 
-    $amount = count($clean) - 1;
+    };
 
-    echo $prefix;
+    // API endpoint parameter generator
+    $generator = function () {
+        return [
+            'track' => $_POST["filter"],
+        ];
+    };
 
-    for ($i = 1; $i <= $amount; $i++) {
-        $cleaner = explode("</content>", $clean[$i]);
-        echo $tweetprefix;
-        echo $cleaner[0];
-        echo $tweetsuffix;
-    }
+    // consume the Twitter Streaming API filter endpoint
+    $floodgate->filter($handler, $generator);
 
-    echo $suffix;
+} catch (FloodgateException $e) {
+    // handle exceptions
 }
-
-$twitterFeed = file_get_contents($feed);
-parse_feed($twitterFeed, $prefix, $tweetprefix, $tweetsuffix, $suffix);
-?>
