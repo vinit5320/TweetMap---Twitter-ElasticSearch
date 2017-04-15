@@ -8,12 +8,25 @@ class ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca
 {
     public static $files = array (
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
+        'b067bc7112e384b61c701452d53a14a8' => __DIR__ . '/..' . '/mtdowling/jmespath.php/src/JmesPath.php',
+        'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
+        '8a9dc1de0ca7e01f3e08231539562f61' => __DIR__ . '/..' . '/aws/aws-sdk-php/src/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'R' => 
         array (
             'React\\Promise\\' => 14,
+        ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+            'Psr\\Http\\Message\\' => 17,
+        ),
+        'J' => 
+        array (
+            'JmesPath\\' => 9,
         ),
         'I' => 
         array (
@@ -25,7 +38,18 @@ class ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca
             'GuzzleHttp\\Subscriber\\Oauth\\' => 28,
             'GuzzleHttp\\Stream\\' => 18,
             'GuzzleHttp\\Ring\\' => 16,
+            'GuzzleHttp\\Psr7\\' => 16,
+            'GuzzleHttp\\Promise\\' => 19,
             'GuzzleHttp\\' => 11,
+        ),
+        'E' => 
+        array (
+            'Elasticsearch\\' => 14,
+        ),
+        'A' => 
+        array (
+            'Aws\\ElasticsearchService\\' => 25,
+            'Aws\\' => 4,
         ),
     );
 
@@ -33,6 +57,18 @@ class ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca
         'React\\Promise\\' => 
         array (
             0 => __DIR__ . '/..' . '/react/promise/src',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Psr\\Http\\Message\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+        ),
+        'JmesPath\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mtdowling/jmespath.php/src',
         ),
         'Impensavel\\Floodgate\\' => 
         array (
@@ -54,9 +90,29 @@ class ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/ringphp/src',
         ),
+        'GuzzleHttp\\Psr7\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/psr7/src',
+        ),
+        'GuzzleHttp\\Promise\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/guzzlehttp/promises/src',
+        ),
         'GuzzleHttp\\' => 
         array (
             0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+        ),
+        'Elasticsearch\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/elasticsearch/elasticsearch/src/Elasticsearch',
+        ),
+        'Aws\\ElasticsearchService\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jsq/amazon-es-php/src',
+        ),
+        'Aws\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/aws/aws-sdk-php/src',
         ),
     );
 

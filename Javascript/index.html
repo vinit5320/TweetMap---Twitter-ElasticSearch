@@ -10,8 +10,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="style.css">
-  <script src="oauth.js"></script>
-  <script src="sha1.js"></script>
 </head>
 <body>
 
@@ -24,14 +22,22 @@
           <li>
             <form class="navbar-form navbar-left" method="post">
               <input type="text" class="form-control" placeholder="Search Tweets" name="tweetSearch" id="tweetSearch">
+                <!--<input type="image" name="submit" src="https://www.w3schools.com/howto/searchicon.png" border="0" alt="Submit" />-->
             </form>
-            <input type="submit" value="Submit" onclick="searchSpecific();">
+              <input id="searchButton" type="image" name="submit" src="search.png" border="0" alt="Submit" onclick="streamData();" />
+            <!--<input id="searchButton" type="submit" value="Submit" >-->
           </li>
         </ul>
       </div>
     </div>
   </nav>
 </section>
+
+<div id="progress" class="waiting">
+  <dt></dt>
+  <dd></dd>
+</div>
+
 <script>
 
     //        google.maps.event.addListener(map, 'click', function (event) {
@@ -78,7 +84,7 @@
 </script>
 <script src="tests.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuJ_2EbQPbUpHos8124meOr2QAlk3Okfs&callback=getData">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuJ_2EbQPbUpHos8124meOr2QAlk3Okfs&callback=initMap">
 </script>
 </body>
 </html>
