@@ -48,9 +48,8 @@ if (empty($OPERATION)) {
                         if ($main = (array)$message) {
                             if ($main['user']) {
                                 $user = (array)$main['user'];
-                                if ($user['location'] && $user['location'] != '') {
+                                if ($user['location'] && $user['location'] != '' && $user['lang'] == 'en') {
                                     //$temp = array("name" => $user['name'], "location" => $user['location'], "tweet" => $main['text']);
-
                                     $fullurl = "http://maps.googleapis.com/maps/api/geocode/json?address=".$user['location'];
                                     $locationString = file_get_contents($fullurl); // get json content
                                     $json_a = json_decode($locationString, true); //json decoder

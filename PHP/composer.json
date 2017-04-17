@@ -2,6 +2,7 @@
     "require": {
         "impensavel/floodgate": "^2.0",
         "elasticsearch/elasticsearch": "~5.0",
-        "jsq/amazon-es-php":"^0.2.0"
+        "jsq/amazon-es-php":"^0.2.0",
+        "nmred/kafka-php": "0.1.*"
     }
 }

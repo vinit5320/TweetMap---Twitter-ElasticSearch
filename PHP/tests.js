@@ -91,11 +91,11 @@ function streamData() {
             if (xhr.status === 200) {
                 //var response = JSON.parse(xhr.responseText);
                 console.log(xhr.responseText);
-                if(xhr.responseText === '1'){
-                    $("#progress").addClass("done");
-                    searchButton.src = "search.png";
-                    searchSpecific(searchTextValue);
-                }
+                // if(xhr.responseText === '1'){
+                //     $("#progress").addClass("done");
+                //     searchButton.src = "search.png";
+                //     searchSpecific(searchTextValue);
+                // }
             }
         }
 

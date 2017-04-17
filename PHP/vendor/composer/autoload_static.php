@@ -116,11 +116,22 @@ class ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'K' => 
+        array (
+            'Kafka\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/nmred/kafka-php/src',
+            ),
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd0a725b1f64bdf072890a91fce1d14ca::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }
