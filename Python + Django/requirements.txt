@@ -8,7 +8,7 @@ oauthlib==2.0.1
 packaging==16.8
 pyparsing==2.2.0
 ratelim==0.1.6
-requests==2.13.0
+requests==2.20.0
 requests-aws4auth==0.9
 requests-oauthlib==0.8.0
 six==1.10.0
